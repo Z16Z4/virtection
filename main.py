@@ -1,11 +1,13 @@
-import winreg
 import shutil
+import time
+import winreg
 from termcolor import colored
 import os
+import sys
 import re
 import subprocess
-import time
 from psutil import virtual_memory
+import cpuid
 #function used to do search queries in windows registry 
 def registrysearch(registry, query, queryresult, string, type):
     #accessing registry through init HKEY
@@ -32,6 +34,7 @@ def registrysearch(registry, query, queryresult, string, type):
         print(colored(type + ": Passed", 'green'))
     #debugging
     print(colored("debug info" + queryresult, 'yellow'))
+
 def registryindex(registry, string, type):
     #accessing registry through init HKEY
     access_registry = winreg.ConnectRegistry(None,winreg.HKEY_LOCAL_MACHINE)
@@ -47,6 +50,7 @@ def registryindex(registry, string, type):
             break
     #debugging
     print(colored("debug info " + x, 'yellow'))
+
 a = 'null'
 registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "Development Kit", "OVMF Check(0)")
 registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "OVMF", "OVMF Check(1)")
@@ -55,7 +59,7 @@ registrysearch(r"SYSTEM\HardwareConfig", "SystemVersion", a, "pc-q35", "Q35 Chec
 registryindex(r"SOFTWARE\WOW6432Node\RedHat", "RHEL", "RedHat Check(0)")
 registrysearch(r"SYSTEM\DriverDatabase\DriverPackages", "Provider", a, "Red Hat", "RedHat Check (1)")
 ##registryindex(r"SYSTEM\DriverDatabase\DriverPackages", "virtdisk", "RedHat Driver Check(1)")
-#TODO add virtualbox and vmware registry checks here
+
 #memory amount
 mem = virtual_memory()
 GB = 1073741824
@@ -92,7 +96,10 @@ result = result.replace("b'", "")
 result = result.replace("\\r\\n'", "")
 if result == "True":
     print(colored("Hypervisor detected", 'red'))
+
+
 #TODO detect cpu rdtscp Frequency for timestamp detection and vm exit
 # TODO detect cpuid for hypervisor id
 #TODO check number of processes on VM 
 #Detection for virtualbox and vmware
+#TODO DECTECTING CPUIDS print(cpuid.cpu_vendor())
