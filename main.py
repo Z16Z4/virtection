@@ -32,7 +32,6 @@ def registrysearch(registry, query, queryresult, string, type):
         print(colored(type + ": Passed", 'green'))
     #debugging
     print(colored("debug info" + queryresult, 'yellow'))
-
 def registryindex(registry, string, type):
     #accessing registry through init HKEY
     access_registry = winreg.ConnectRegistry(None,winreg.HKEY_LOCAL_MACHINE)
@@ -48,7 +47,6 @@ def registryindex(registry, string, type):
             break
     #debugging
     print(colored("debug info " + x, 'yellow'))
-
 a = 'null'
 registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "Development Kit", "OVMF Check(0)")
 registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "OVMF", "OVMF Check(1)")
@@ -94,8 +92,6 @@ result = result.replace("b'", "")
 result = result.replace("\\r\\n'", "")
 if result == "True":
     print(colored("Hypervisor detected", 'red'))
-
-
 #TODO detect cpu rdtscp Frequency for timestamp detection and vm exit
 # TODO detect cpuid for hypervisor id
 #TODO check number of processes on VM 
