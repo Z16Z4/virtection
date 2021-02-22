@@ -1,5 +1,5 @@
 import winreg
-
+from termcolor import colored
 #function used to do search queries in windows registry 
 def registrysearch(registry, query, queryresult, string, type):
     #accessing registry through init HKEY
@@ -8,7 +8,7 @@ def registrysearch(registry, query, queryresult, string, type):
     access_key = winreg.OpenKey(access_registry,registry)
     for i in range(20):
         try:
-            #subkey of registry, subname 
+            #results based on registry keys
             asubkey_name=winreg.EnumKey(access_key,i)
             asubkey=winreg.OpenKey(access_key, asubkey_name)
             #searching all queries
@@ -20,15 +20,34 @@ def registrysearch(registry, query, queryresult, string, type):
     #checking query against possible keywords
     if string in queryresult:
         #virtual machine detected
-        print(type + ": Failed")
+        print(colored(type+ ": Detected", 'red'))
     else:
         #'virtual machine not detected
-        print(type + ": Success")
+        print(type + ": Passed")
     #debugging
-    print("debug info" + queryresult)
+    print(colored("debug info" + queryresult, 'green'))
 
-#registrysearch(REGISTRY__PATH, REGISTRYNAME, NULL, SEARCH QUERY, TYPE OF CHECK)
-registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", "null", "Development Kit", "OVMF Check(0)")
-registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", "null", "OVMF", "OVMF Check(1)")
-registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", "null", "Q35", "O35 Check(0)")
-registrysearch(r"SYSTEM\HardwareConfig", "SystemVersion", "null", "pc-q35", "Q35 Check(1)")
+def registryindex(registry, string, type):
+    #accessing registry through init HKEY
+    access_registry = winreg.ConnectRegistry(None,winreg.HKEY_LOCAL_MACHINE)
+    #opening registry 
+    access_key = winreg.OpenKey(access_registry,registry)
+    for i in range(20):
+        try:
+            #results based on directory names
+            x =winreg.EnumKey(access_key,i)
+            if x == string:
+                print(colored(type+ ": Detected", 'red'))
+            else:
+                print(type+ ": Passed")
+        except:
+            break
+    #debugging
+    print(colored("debug info " + x, 'green'))
+
+a = 'null'
+registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "Development Kit", "OVMF Check(0)")
+registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "OVMF", "OVMF Check(1)")
+registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "Q35", "O35 Check(0)")
+registrysearch(r"SYSTEM\HardwareConfig", "SystemVersion", a, "pc-q35", "Q35 Check(1)")
+registryindex(r"SOFTWARE\WOW6432Node\RedHat", "RHEL", "RedHat Check(0)")
