@@ -6,6 +6,7 @@ import os
 import sys
 import re
 import subprocess
+from ctypes import *
 from psutil import virtual_memory
 import cpuid
 #function used to do search queries in windows registry 
@@ -96,10 +97,16 @@ result = result.replace("b'", "")
 result = result.replace("\\r\\n'", "")
 if result == "True":
     print(colored("Hypervisor detected", 'red'))
+#importing c library
+rdtsc_c = CDLL("./rdtsc.so")
+#running rdtsc.c as c library from import
+rdtsc_c.execute()
 
-
-#TODO detect cpu rdtscp Frequency for timestamp detection and vm exit
-# TODO detect cpuid for hypervisor id
+#TODO detect cpuid for hypervisor id
 #TODO check number of processes on VM 
-#Detection for virtualbox and vmware
+#TODO Detection for virtualbox and vmware
 #TODO DECTECTING CPUIDS print(cpuid.cpu_vendor())
+#TODO if passed exists print green color if line also contains rdsc check
+#TODO if detected exists print red color if line also contains RDTSC Exit VM
+
+
