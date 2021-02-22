@@ -1,0 +1,5 @@
+winreg
+shutil
+termcolor
+time
+psutil
