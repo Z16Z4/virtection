@@ -8,3 +8,6 @@ I also aim to create a small community that may assist in updating virtection as
 
 
 <h1 align="center"><img align="center" src="https://github.com/cronos-hash/virtection/blob/main/detectexample.png"></h1>
+
+### virus total score
+https://bit.ly/3uyNHOO
