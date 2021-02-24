@@ -8,7 +8,8 @@ import re
 import subprocess
 from ctypes import *
 from psutil import virtual_memory
-import cpuid
+import psutil
+wait = input("press enter to start")
 #function used to do search queries in windows registry 
 def registrysearch(registry, query, queryresult, string, type):
     #accessing registry through init HKEY
@@ -29,12 +30,12 @@ def registrysearch(registry, query, queryresult, string, type):
     #checking query against possible keywords
     if string in queryresult:
         #virtual machine detected
-        print(colored(type+ ": Detected", 'red'))
+        print(type+ colored(": Detected", 'red'))
     else:
         #'virtual machine not detected
-        print(colored(type + ": Passed", 'green'))
+        print(type + colored(": Passed", 'green'))
     #debugging
-    print(colored("debug info" + queryresult, 'yellow'))
+    #print("debug info " + colored(queryresult, 'yellow'))
 
 def registryindex(registry, string, type):
     #accessing registry through init HKEY
@@ -46,19 +47,19 @@ def registryindex(registry, string, type):
             #results based on directory names
             x =winreg.EnumKey(access_key,i)
             if x == string:
-                print(colored(type+ ": Detected", 'red'))
+                print(type+ colored(": Detected", 'red'))
         except:
             break
     #debugging
-    print(colored("debug info " + x, 'yellow'))
+    #print("debug info " + colored(x, 'yellow'))
 
 a = 'null'
-registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "Development Kit", "OVMF Check(0)")
-registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "OVMF", "OVMF Check(1)")
-registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "Q35", "O35 Check(0)")
-registrysearch(r"SYSTEM\HardwareConfig", "SystemVersion", a, "pc-q35", "Q35 Check(1)")
-registryindex(r"SOFTWARE\WOW6432Node\RedHat", "RHEL", "RedHat Check(0)")
-registrysearch(r"SYSTEM\DriverDatabase\DriverPackages", "Provider", a, "Red Hat", "RedHat Check (1)")
+registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "Development Kit", "BIOS Vendor")
+registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "OVMF", "OVMF Check")
+registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "Q35", "SystemProductName")
+registrysearch(r"SYSTEM\HardwareConfig", "SystemVersion", a, "pc-q35", "SystemVersion")
+registryindex(r"SOFTWARE\WOW6432Node\RedHat", "RHEL", "RedHat check: ")
+registrysearch(r"SYSTEM\DriverDatabase\DriverPackages", "Provider", a, "Red Hat", "RedHat check")
 ##registryindex(r"SYSTEM\DriverDatabase\DriverPackages", "virtdisk", "RedHat Driver Check(1)")
 
 #memory amount
@@ -68,26 +69,26 @@ GB = 1073741824
 memory = int(mem.total / GB)
 #if gigabyte below 4
 if memory < 4:
-    print(colored("RAM is less than 4GB probably a virtual machine", 'red'))
+    print("RAMCheck " + colored("is less than 4GB", 'red'))
 else:
     #if higher probably not default virtual setting
-    print(colored("RAM is higher than 4 most likely a real machine", 'green'))
+    print("RAMCheck " + colored("is less than 4GB", 'red'))
 #memory to string
 memory =''.join(str(memory))
 #debug
-print(colored(memory + "GB Detected", 'yellow'))
+#print(memory + "GB Detected")
 #store usages
 usage = shutil.disk_usage("C:\\")
 #only want full disk size
 disk_total =int(usage[0] / GB)
 #if the disk size is below 50gb probably default virtual setting
 if disk_total < 50:
-    print(colored("disk total is lower than 50GB", 'red'))
+    print("DiskTotal " + colored(" less than ", 'red') + "50GB")
 else:
-    print(colored("disk total is higher than 50GB", 'green'))
+    print("DiskTotal: " + colored(" more than ", 'green') + "50GB")
 #convert to string
 disk_total =''.join(str(disk_total))
-print(colored(disk_total + "GB Detected", 'yellow'))
+#print(disk_total + "GB: " + colored("Detected", 'yellow'))
 #running powershell command to detect hypervisor method#1
 result = subprocess.check_output("powershell.exe (gcim Win32_ComputerSystem).HypervisorPresent", shell=True)
 #converting to string
@@ -96,17 +97,47 @@ result =''.join(str(result))
 result = result.replace("b'", "")
 result = result.replace("\\r\\n'", "")
 if result == "True":
-    print(colored("Hypervisor detected", 'red'))
+    print("Hypervisor " + colored("Detected", 'red'))
 #importing c library
+time.sleep(10)
+print('-------------------')
+print(colored('Direct CPU Clock Access ', 'yellow'))
 rdtsc_c = CDLL("./rdtsc.so")
 #running rdtsc.c as c library from import
 rdtsc_c.execute()
-
+print('\n-------------------')
+print('\n---Process check---')
+def process_exists(process_name):
+    progs = str(subprocess.check_output('tasklist'))
+    if process_name in progs:
+        return True
+    else:
+        return False
+processes  = ["qemu-ga.exe", "xenservice.exe", "prl_tools.exe", "prl_cc.exe", "vmusrvc.exe", "vmsrvc.exe", "vmacthlp.exe", "VGAuthService.exe", "vmwareuser", "vmwaretray.exe","vmtoolsd.exe","vboxtray.exe", "vboxservice.exe"]
+count = 0
+while count < len(processes):
+    if process_exists(processes[count]):
+        print("Process " + processes[count] + colored(": Detected", 'red'))
+    else:
+        print("Process " + processes[count] + colored(": Passed" , 'green'))
+    count += 1
 #TODO detect cpuid for hypervisor id
 #TODO check number of processes on VM 
 #TODO Detection for virtualbox and vmware
 #TODO DECTECTING CPUIDS print(cpuid.cpu_vendor())
-#TODO if passed exists print green color if line also contains rdsc check
-#TODO if detected exists print red color if line also contains RDTSC Exit VM
+#TODO detect files related to virtualisation 
 
+path = 'C:\Windows\System32\drivers'
 
+files = os.listdir(path)
+drivers = ["VBoxMouse.sys", "VBoxGuest.sys", "VBoxSF.sys", "VBoxVideo.sys", "vboxdisp.dll", "vboxhook.dll", 
+"vboxmrxnp.dll", "vboxogl.dll", "vboxoglarrayspu.dll", 
+"vboxoglcrutil.dll", "vboxoglerrorspu.dll", "vboxoglfeedbackspu.dll", 
+"vboxoglpackspu.dll", "vboxoglpassthroughspu.dll", "vboxservice.exe", "vboxtray.exe", "VBoxControl.exe" ,
+"vmmouse.sys", "vmhgfs.sys", "vm3dmp.sys", "vmci.sys","mhgfs.sys", "vmmemctl.sys", "vmmouse.sys", "vmrawdsk.sys",
+"vmusbmouse.sys", "NdisVirtualBus.sys"]
+print('\n---Drivers check---')
+for f in files:
+    for dll in drivers:
+        if f == dll:
+            print("Driver " + dll + colored(": Detected", 'red'))
