@@ -125,7 +125,7 @@ while count < len(processes):
 #TODO check number of processes on VM 
 #TODO Detection for virtualbox and vmware
 #TODO DECTECTING CPUIDS print(cpuid.cpu_vendor())
-#TODO detect files related to virtualisation 
+
 
 path = 'C:\Windows\System32\drivers'
 
