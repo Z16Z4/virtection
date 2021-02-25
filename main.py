@@ -1,6 +1,5 @@
 import shutil
 import time
-import winreg
 from termcolor import colored
 import os
 import sys
@@ -12,6 +11,8 @@ import psutil
 import fileinput
 import cpuid
 import struct
+if os.name == "nt":
+    import winreg
 
 wait = input("press enter to start")
 
@@ -156,7 +157,7 @@ else:
     cpu_type = cpu_vendor(cpu)
     if cpu_type == 'AuthenticAMD':
         print("this is an AMD CPU")
-        
+
     
 
 #TODO detect cpuid for hypervisor id
