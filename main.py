@@ -141,6 +141,17 @@ if os.name == "nt":
             print("Process " + processes[count] + colored(": Passed" , 'green'))
         count += 1
     path = 'C:\Windows\System32\drivers'
+    if os.path.exists('D:\AUTORUN.INF'):
+        guest_additions_mounted = r'D:\\'
+        guest_additons = ["cert", "NT3x", "OS2", "VboxDarwinAdditions.pkg", "VboxDarwinAdditionsUninstall.tool", "VboxLinuxAdditions.run", "VboxSolarisAdditions.pkg", "VboxWindowsAdditions.exe", "VboxWindowsAdditions-amd64.exe", "VboxWindowsAdditions-x86.exe"]
+        guest_addition_check = os.listdir(guest_additions_mounted)
+        for g in guest_addition_check:
+            for guestadditions in guest_additons:
+                if g == guestadditions:
+                    print("Guest Addition file " + guest_additons + colored(": Detected", 'red'))
+    else:
+        print("D:\ not mounted")
+    
     files = os.listdir(path)
     drivers = ["VBoxMouse.sys", "VBoxGuest.sys", "VBoxSF.sys", "VBoxVideo.sys", "vboxdisp.dll", "vboxhook.dll", 
     "vboxmrxnp.dll", "vboxogl.dll", "vboxoglarrayspu.dll", 
@@ -159,6 +170,7 @@ if os.name == "nt":
         print("This is an AMD CPU")
     elif cpu_type == 'GenuineIntel':
         print("This is an Intel CPU")
+    
     user_input = input("(0)restart : (1) close : ")
     if user_input == '0':
         os.execl(sys.executable, sys.executable, *sys.argv)
