@@ -41,9 +41,9 @@ def registryindex(registry, string, type):
     #accessing registry through init HKEY
     access_registry = winreg.ConnectRegistry(None,winreg.HKEY_LOCAL_MACHINE)
     #opening registry 
-    access_key = winreg.OpenKey(access_registry,registry)
     for i in range(1028):
         try:
+            access_key = winreg.OpenKey(access_registry,registry)
             #results based on directory names
             x =winreg.EnumKey(access_key,i)
             if x == string:
@@ -72,7 +72,7 @@ if memory < 4:
     print("RAMCheck " + colored("is less than 4GB", 'red'))
 else:
     #if higher probably not default virtual setting
-    print("RAMCheck " + colored("is less than 4GB", 'red'))
+    print("RAMCheck " + colored("is higher than 4GB", 'green'))
 #memory to string
 memory =''.join(str(memory))
 #debug
@@ -140,4 +140,5 @@ print('\n---Drivers check---')
 for f in files:
     for dll in drivers:
         if f == dll:
+            print("This is just an example for now")
             print("Driver " + dll + colored(": Detected", 'red'))
