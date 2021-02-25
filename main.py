@@ -156,7 +156,16 @@ if os.name == "nt":
         print("This is an Intel CPU")
     pause = input("\npress enter to close..")
 else:
-    print("I am In Linux")
+    print("Linux " + colored("Detected", 'green'))
+    gorh = input("is this the guest os or host (host/guest): ")
+    if gorh == 'host':
+        patches = input("do you want to apply rdstc patches? (y/n)")
+        if patches == 'y':
+            print("applying patches")
+        else:
+            print("failed to apply patches")
+    elif gorh == 'guest':
+        print("testing system for virtual machine detection")  
     cpu = cpuid.cpuid
     cpu_type = cpu_vendor(cpu)
     if cpu_type == 'AuthenticAMD':
