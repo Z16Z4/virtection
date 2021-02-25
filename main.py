@@ -1,5 +1,6 @@
 import shutil
 import time
+import winreg
 from termcolor import colored
 import os
 import sys
@@ -8,10 +9,20 @@ import subprocess
 from ctypes import *
 from psutil import virtual_memory
 import psutil
+import fileinput
+import cpuid
+import struct
 
 wait = input("press enter to start")
-if os.name == "nt":
-    import winreg
+
+def cpu_vendor(cpu):
+    _, b, c, d = cpu(0)
+    return struct.pack("III", b, d, c).decode("utf-8")
+
+def cpu_name(cpu):
+    return "".join((struct.pack("IIII", *cpu(0x80000000 + i)).decode("utf-8")
+            for i in range(2, 5))).strip()
+
 
 #function used to do search queries in windows registry 
 def registrysearch(registry, query, queryresult, string, type):
@@ -136,12 +147,18 @@ if os.name == "nt":
         for dll in drivers:
             if f == dll:
                 print("Driver " + dll + colored(": Detected", 'red'))
-
+    cpu = cpuid.cpuid
+    print(cpu_vendor(cpu))
     pause = input("\npress enter to close..")
 else:
     print("I am In Linux")
-    rdtsc_c = CDLL("./rdtsc.so")
-    rdtsc_c.execute()
+    cpu = cpuid.cpuid
+    cpu_type = cpu_vendor(cpu)
+    if cpu_type == 'AuthenticAMD':
+        print("this is an AMD CPU")
+        
+    
+
 #TODO detect cpuid for hypervisor id
 #TODO check number of processes on VM 
 #TODO Detection for virtualbox and vmware
