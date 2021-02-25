@@ -169,7 +169,7 @@ else:
         mem = virtual_memory()
         GB = 1073741824
         #dividing bytes to get Gigabyte
-        # memory = int(mem.total / GB)
+        memory = int(mem.total / GB)
         # #if gigabyte below 4
         if memory < 4:
             print("RAMCheck " + colored("is less than 4GB", 'red'))
