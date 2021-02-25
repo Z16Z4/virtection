@@ -140,7 +140,8 @@ if os.name == "nt":
     pause = input("\npress enter to close..")
 else:
     print("I am In Linux")
-
+    rdtsc_c = CDLL("./rdtsc.so")
+    rdtsc_c.execute()
 #TODO detect cpuid for hypervisor id
 #TODO check number of processes on VM 
 #TODO Detection for virtualbox and vmware
