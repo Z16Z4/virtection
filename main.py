@@ -79,6 +79,11 @@ if os.name == "nt":
     registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "OVMF", "OVMF Check")
     registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "Q35", "SystemProductName")
     registrysearch(r"SYSTEM\HardwareConfig", "SystemVersion", a, "pc-q35", "SystemVersion")
+    registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "VirtualBox", "VirtualBox?")
+    registrysearch(r"SYSTEM\HardwareConfig", "SystemFamily", a, "Virtual Machine", "Virtual Machine")
+    registrysearch(r"SYSTEM\HardwareConfig", "SystemBiosVersion", a, "VBOX", "VirtualBox?")
+    registrysearch(r"SYSTEM\HardwareConfig", "BaseBoardManufacturer", a, "Oracle Corporation", "Oracle check")
+    registrysearch(r"SYSTEM\HardwareConfig", "BaseBoardProduct", a, "VirtualBox", "VirtualBox?")
     registryindex(r"SOFTWARE\WOW6432Node\RedHat", "RHEL", "RedHat check: ")
     registrysearch(r"SYSTEM\DriverDatabase\DriverPackages", "Provider", a, "Red Hat", "RedHat check")
     ##registryindex(r"SYSTEM\DriverDatabase\DriverPackages", "virtdisk", "RedHat Driver Check(1)")
@@ -154,7 +159,9 @@ if os.name == "nt":
         print("This is an AMD CPU")
     elif cpu_type == 'GenuineIntel':
         print("This is an Intel CPU")
-    pause = input("\npress enter to close..")
+    user_input = input("(0)restart : (1) close : ")
+    if user_input == '0':
+        os.execl(sys.executable, sys.executable, *sys.argv)
 else:
     print("Linux " + colored("Detected", 'green'))
     gorh = input("is this the guest os or host (host/guest): ")
@@ -207,9 +214,13 @@ else:
             print("amd")
         elif cpu_type == 'GenuineIntel':
             print("intel")
-
+        
+        user_input = input("(0)restart : (1) close : ")
+        if user_input == '0':
+            os.execl(sys.executable, sys.executable, *sys.argv)
             
             
+          
 
     
 
