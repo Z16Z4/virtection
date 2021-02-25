@@ -181,7 +181,7 @@ else:
         #debug
         #print(memory + "GB Detected")
         #store usages
-        usage = shutil.disk_usage("C:\\")
+        usage = shutil.disk_usage("/")
         #only want full disk size
         disk_total =int(usage[0] / GB)
         #if the disk size is below 50gb probably default virtual setting
