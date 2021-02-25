@@ -171,9 +171,15 @@ else:
         #dividing bytes to get Gigabyte
         memory = int(mem.total / GB)
         if os.path.isfile('/.dockerenv'):
-            print("docker-container: Detected")
+            print("Docker-container: " + colored("Detected", 'red'))
         else:
-            print("docker-container: Passed")
+            print("Docker-container: " + colored("Passed", 'green'))
+        if os.path.isfile('/etc/default/grub'):
+            print("Grub Check: " + colored("Detected", 'red'))
+        else:
+            print("Grub Check: " + colored("Passed", 'green'))
+
+
         # #if gigabyte below 4
         if memory < 4:
             print("RAMCheck " + colored("is less than 4GB", 'red'))
