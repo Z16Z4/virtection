@@ -1,6 +1,5 @@
 import shutil
 import time
-import winreg
 from termcolor import colored
 import os
 import sys
@@ -11,7 +10,8 @@ from psutil import virtual_memory
 import psutil
 
 wait = input("press enter to start")
-
+if os.name == "nt":
+    import winreg
 
 #function used to do search queries in windows registry 
 def registrysearch(registry, query, queryresult, string, type):
