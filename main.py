@@ -149,7 +149,11 @@ if os.name == "nt":
             if f == dll:
                 print("Driver " + dll + colored(": Detected", 'red'))
     cpu = cpuid.cpuid
-    print(cpu_vendor(cpu))
+    cpu_type = cpu_vendor(cpu)
+    if cpu_type == 'AuthenticAMD':
+        print("This is an AMD CPU")
+    elif cpu_type == 'GenuineIntel':
+        print("This is an Intel CPU")
     pause = input("\npress enter to close..")
 else:
     print("I am In Linux")
@@ -157,6 +161,8 @@ else:
     cpu_type = cpu_vendor(cpu)
     if cpu_type == 'AuthenticAMD':
         print("this is an AMD CPU")
+    elif cpu_type == 'GenuineIntel':
+        print('This is an Intel CPU')
 
     
 
