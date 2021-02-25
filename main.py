@@ -175,9 +175,9 @@ else:
         else:
             print("Docker-container: " + colored("Passed", 'green'))
         if os.path.isfile('/etc/default/grub'):
-            print("Grub Check: " + colored("Detected", 'red'))
-        else:
             print("Grub Check: " + colored("Passed", 'green'))
+        else:
+            print("Grub Check: " + colored("Detected", 'red'))
 
 
         # #if gigabyte below 4
