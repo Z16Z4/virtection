@@ -165,13 +165,40 @@ else:
         else:
             print("failed to apply patches")
     elif gorh == 'guest':
-        print("testing system for virtual machine detection")  
-    cpu = cpuid.cpuid
-    cpu_type = cpu_vendor(cpu)
-    if cpu_type == 'AuthenticAMD':
-        print("this is an AMD CPU")
-    elif cpu_type == 'GenuineIntel':
-        print('This is an Intel CPU')
+        print("testing system for virtual machine detection")
+        mem = virtual_memory()
+        GB = 1073741824
+        #dividing bytes to get Gigabyte
+        # memory = int(mem.total / GB)
+        # #if gigabyte below 4
+        if memory < 4:
+            print("RAMCheck " + colored("is less than 4GB", 'red'))
+        else:
+            #if higher probably not default virtual setting
+            print("RAMCheck " + colored("is higher than 4GB", 'green'))
+            #memory to string
+        memory =''.join(str(memory))
+        #debug
+        #print(memory + "GB Detected")
+        #store usages
+        usage = shutil.disk_usage("C:\\")
+        #only want full disk size
+        disk_total =int(usage[0] / GB)
+        #if the disk size is below 50gb probably default virtual setting
+        if disk_total < 50:
+            print("DiskTotal " + colored(" less than ", 'red') + "50GB")
+        else:
+            print("DiskTotal: " + colored(" more than ", 'green') + "50GB")
+        #convert to string
+        disk_total =''.join(str(disk_total))
+        cpu = cpuid.cpuid
+        cpu_type = cpu_vendor(cpu)
+        if cpu_type == 'AuthenticAMD':
+            print("this is an AMD CPU")
+            print("checking for iommu (iommu functon)")
+        elif cpu_type == 'GenuineIntel':
+            print('This is an Intel CPU')
+            print("checking for iommu (iommu function)")
 
     
 
