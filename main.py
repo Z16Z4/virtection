@@ -195,8 +195,10 @@ else:
         cpu_type = cpu_vendor(cpu)
         os.system('#!/bin/bash if [ -f /.dockerenv ]; then echo "Docker Container: Detected"; else echo "Docker Container: Passed"; fi')
         if cpu_type == 'AuthenticAMD':
-            
+            print("amd")
         elif cpu_type == 'GenuineIntel':
+            print("intel")
+            
             
             
 
