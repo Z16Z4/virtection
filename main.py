@@ -7,6 +7,7 @@ import re
 import subprocess
 from ctypes import *
 from psutil import virtual_memory
+from os.path import exists
 import psutil
 import fileinput
 import cpuid
@@ -146,14 +147,16 @@ if os.name == "nt":
     registrysearch(r"SYSTEM\DriverDatabase\DriverPackages", "Provider", a, "Red Hat", "RedHat check")
 
     path = 'C:\Windows\System32\drivers'
-    guest_additions_mounted = 'D:\\'
-    guest_additons = ["cert", "NT3x", "OS2", "VboxDarwinAdditions.pkg", "VboxDarwinAdditionsUninstall.tool", "VboxLinuxAdditions.run", "VboxSolarisAdditions.pkg", "VboxWindowsAdditions.exe", "VboxWindowsAdditions-amd64.exe", "VboxWindowsAdditions-x86.exe"]
-    guest_addition_check = os.listdir(guest_additions_mounted)
-    for g in guest_addition_check:
-        for guestadditions in guest_additons:
-            if g == guestadditions:
-                print("Guest Addition file " + guest_additons + colored(": Detected", 'red'))
-   
+    d_drive = os.path.exists('D:\\')
+    guestadditions_drive = 'D:\\'
+    if d_drive == 'True':
+        guest_additions = ["VboxDarwinAdditions.pkg", "VboxDarwinAdditionsUninstall.tool", "VboxLinuxAdditions.run",
+        "VboxSolarisAdditions.pkg", "VboxWindowsAdditions.exe", "VboxWindowsAdditions-x86.exe", "VboxWindowsAdditions-amd64.exe"]
+        guest_additions_check = os.listdir(guestadditions_drive)
+        for g in guest_additions_check:
+            for guest_addition_exists in guest_additions_check:
+                if g == guest_addition_exists:
+                    print("Guest Additions file " + guest_addition_exists + colored(": Detected", 'red'))
     files = os.listdir(path)
     drivers = ["VBoxMouse.sys", "VBoxGuest.sys", "VBoxSF.sys", "VBoxVideo.sys", "vboxdisp.dll", "vboxhook.dll", 
     "vboxmrxnp.dll", "vboxogl.dll", "vboxoglarrayspu.dll", 
