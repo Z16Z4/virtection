@@ -170,6 +170,10 @@ else:
         GB = 1073741824
         #dividing bytes to get Gigabyte
         memory = int(mem.total / GB)
+        if os.path.isfile('/.dockerenv'):
+            print("docker-container: Detected")
+        else:
+            print("docker-container: Passed")
         # #if gigabyte below 4
         if memory < 4:
             print("RAMCheck " + colored("is less than 4GB", 'red'))
@@ -193,12 +197,11 @@ else:
         disk_total =''.join(str(disk_total))
         cpu = cpuid.cpuid
         cpu_type = cpu_vendor(cpu)
-        os.system('#!/bin/bash if [ -f /.dockerenv ]; then echo "Docker Container: Detected"; else echo "Docker Container: Passed"; fi')
         if cpu_type == 'AuthenticAMD':
             print("amd")
         elif cpu_type == 'GenuineIntel':
             print("intel")
-            
+
             
             
 
