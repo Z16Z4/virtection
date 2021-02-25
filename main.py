@@ -193,17 +193,15 @@ else:
         disk_total =''.join(str(disk_total))
         cpu = cpuid.cpuid
         cpu_type = cpu_vendor(cpu)
+        os.system('#!/bin/bash if [ -f /.dockerenv ]; then echo "Docker Container: Detected"; else echo "Docker Container: Passed"; fi')
         if cpu_type == 'AuthenticAMD':
-            print("this is an AMD CPU")
-            print("checking for iommu (iommu functon)")
+            
         elif cpu_type == 'GenuineIntel':
-            print('This is an Intel CPU')
-            print("checking for iommu (iommu function)")
+            
+            
 
     
 
-#TODO detect cpuid for hypervisor id
-#TODO check number of processes on VM 
-#TODO Detection for virtualbox and vmware
-#TODO DECTECTING CPUIDS print(cpuid.cpu_vendor())
-#TODO detect files related to virtualisation 
+#TODO detect linux & windows in virtualbox and vmware
+#TODO detect files related to virtualisation in linux host
+#TODO detect iommu on host system, assist in applying patches all linux
