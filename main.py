@@ -147,16 +147,15 @@ if os.name == "nt":
     registrysearch(r"SYSTEM\DriverDatabase\DriverPackages", "Provider", a, "Red Hat", "RedHat check")
 
     path = 'C:\Windows\System32\drivers'
-    d_drive = os.path.exists('D:\\')
     guestadditions_drive = 'D:\\'
-    if d_drive == 'True':
-        guest_additions = ["VboxDarwinAdditions.pkg", "VboxDarwinAdditionsUninstall.tool", "VboxLinuxAdditions.run",
-        "VboxSolarisAdditions.pkg", "VboxWindowsAdditions.exe", "VboxWindowsAdditions-x86.exe", "VboxWindowsAdditions-amd64.exe"]
-        guest_additions_check = os.listdir(guestadditions_drive)
-        for g in guest_additions_check:
-            for guest_addition_exists in guest_additions_check:
-                if g == guest_addition_exists:
-                    print("Guest Additions file " + guest_addition_exists + colored(": Detected", 'red'))
+    print('\n--Guest Additon drive check---')
+    guest_additions = ["VboxDarwinAdditions.pkg", "VboxDarwinAdditionsUninstall.tool", "VboxLinuxAdditions.run",
+    "VboxSolarisAdditions.pkg", "VboxWindowsAdditions.exe", "VboxWindowsAdditions-x86.exe", "VboxWindowsAdditions-amd64.exe", "script.sh"]
+    guest_additions_check = os.listdir(guestadditions_drive)
+    for g in guest_additions_check:
+        for found_guest in guest_additions:
+            if g == found_guest:
+                print("Guest Additions file " + found_guest + colored(": Detected", 'red'))
     files = os.listdir(path)
     drivers = ["VBoxMouse.sys", "VBoxGuest.sys", "VBoxSF.sys", "VBoxVideo.sys", "vboxdisp.dll", "vboxhook.dll", 
     "vboxmrxnp.dll", "vboxogl.dll", "vboxoglarrayspu.dll", 
