@@ -74,18 +74,8 @@ def process_exists(process_name):
     #debugging
     #print("debug info " + colored(x, 'yellow'))
 if os.name == "nt":
+    print('\n---Disk and Hypervisor check---')
     a = 'null'
-    registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "Development Kit", "BIOS Vendor")
-    registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "OVMF", "OVMF Check")
-    registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "Q35", "SystemProductName")
-    registrysearch(r"SYSTEM\HardwareConfig", "SystemVersion", a, "pc-q35", "SystemVersion")
-    registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "VirtualBox", "VirtualBox?")
-    registrysearch(r"SYSTEM\HardwareConfig", "SystemFamily", a, "Virtual Machine", "Virtual Machine")
-    registrysearch(r"SYSTEM\HardwareConfig", "SystemBiosVersion", a, "VBOX", "VirtualBox?")
-    registrysearch(r"SYSTEM\HardwareConfig", "BaseBoardManufacturer", a, "Oracle Corporation", "Oracle check")
-    registrysearch(r"SYSTEM\HardwareConfig", "BaseBoardProduct", a, "VirtualBox", "VirtualBox?")
-    registryindex(r"SOFTWARE\WOW6432Node\RedHat", "RHEL", "RedHat check: ")
-    registrysearch(r"SYSTEM\DriverDatabase\DriverPackages", "Provider", a, "Red Hat", "RedHat check")
     ##registryindex(r"SYSTEM\DriverDatabase\DriverPackages", "virtdisk", "RedHat Driver Check(1)")
     #memory amount
     mem = virtual_memory()
@@ -132,6 +122,7 @@ if os.name == "nt":
     rdtsc_c.execute()
     print('\n-------------------')
     print('\n---Process check---')
+    
     processes  = ["qemu-ga.exe", "xenservice.exe", "prl_tools.exe", "prl_cc.exe", "vmusrvc.exe", "vmsrvc.exe", "vmacthlp.exe", "VGAuthService.exe", "vmwareuser", "vmwaretray.exe","vmtoolsd.exe","vboxtray.exe", "vboxservice.exe"]
     count = 0
     while count < len(processes):
@@ -140,18 +131,29 @@ if os.name == "nt":
         else:
             print("Process " + processes[count] + colored(": Passed" , 'green'))
         count += 1
+    time.sleep(2)
+    print('\n--Registry check---')
+    registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "Development Kit", "BIOS Vendor")
+    registrysearch(r"SYSTEM\HardwareConfig", "BIOSVendor", a, "OVMF", "OVMF Check")
+    registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "Q35", "SystemProductName")
+    registrysearch(r"SYSTEM\HardwareConfig", "SystemVersion", a, "pc-q35", "SystemVersion")
+    registrysearch(r"SYSTEM\HardwareConfig", "SystemProductName", a, "VirtualBox", "VirtualBox?")
+    registrysearch(r"SYSTEM\HardwareConfig", "SystemFamily", a, "Virtual Machine", "Virtual Machine")
+    registrysearch(r"SYSTEM\HardwareConfig", "SystemBiosVersion", a, "VBOX", "VirtualBox?")
+    registrysearch(r"SYSTEM\HardwareConfig", "BaseBoardManufacturer", a, "Oracle Corporation", "Oracle check")
+    registrysearch(r"SYSTEM\HardwareConfig", "BaseBoardProduct", a, "VirtualBox", "VirtualBox?")
+    registryindex(r"SOFTWARE\WOW6432Node\RedHat", "RHEL", "RedHat check: ")
+    registrysearch(r"SYSTEM\DriverDatabase\DriverPackages", "Provider", a, "Red Hat", "RedHat check")
+
     path = 'C:\Windows\System32\drivers'
-    if os.path.exists('D:\AUTORUN.INF'):
-        guest_additions_mounted = r'D:\\'
-        guest_additons = ["cert", "NT3x", "OS2", "VboxDarwinAdditions.pkg", "VboxDarwinAdditionsUninstall.tool", "VboxLinuxAdditions.run", "VboxSolarisAdditions.pkg", "VboxWindowsAdditions.exe", "VboxWindowsAdditions-amd64.exe", "VboxWindowsAdditions-x86.exe"]
-        guest_addition_check = os.listdir(guest_additions_mounted)
-        for g in guest_addition_check:
-            for guestadditions in guest_additons:
-                if g == guestadditions:
-                    print("Guest Addition file " + guest_additons + colored(": Detected", 'red'))
-    else:
-        print("D:\ not mounted")
-    
+    guest_additions_mounted = 'D:\\'
+    guest_additons = ["cert", "NT3x", "OS2", "VboxDarwinAdditions.pkg", "VboxDarwinAdditionsUninstall.tool", "VboxLinuxAdditions.run", "VboxSolarisAdditions.pkg", "VboxWindowsAdditions.exe", "VboxWindowsAdditions-amd64.exe", "VboxWindowsAdditions-x86.exe"]
+    guest_addition_check = os.listdir(guest_additions_mounted)
+    for g in guest_addition_check:
+        for guestadditions in guest_additons:
+            if g == guestadditions:
+                print("Guest Addition file " + guest_additons + colored(": Detected", 'red'))
+   
     files = os.listdir(path)
     drivers = ["VBoxMouse.sys", "VBoxGuest.sys", "VBoxSF.sys", "VBoxVideo.sys", "vboxdisp.dll", "vboxhook.dll", 
     "vboxmrxnp.dll", "vboxogl.dll", "vboxoglarrayspu.dll", 
