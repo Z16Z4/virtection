@@ -27,4 +27,4 @@ download .exe
 
 
 ### virus total score
-https://bit.ly/3uyNHOO
+http://alturl.com/et9o2
