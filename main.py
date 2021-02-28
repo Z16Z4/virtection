@@ -1,9 +1,6 @@
 import os, re, sys, subprocess, psutil, fileinput
 import cpuid, struct, keyboard
 import display, registry, windows, linux
-from py_vmdetect import VMDetect
-vmd = VMDetect()
-vmd.is_vm()
 def main():
     display.loading()
     display.print_banner()
