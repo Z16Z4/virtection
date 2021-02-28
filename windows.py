@@ -1,4 +1,4 @@
-import os, subprocess, shutil, display, registry, keyboard
+import os, subprocess, shutil, display, registry, platform
 from ctypes import *
 from psutil import virtual_memory
 
@@ -152,4 +152,23 @@ def driver_check():
         for dll in drivers:
             if f == dll:
                 print("Driver " + dll + " " + display.detected())
+def username_check():
+    #Testing for default usernames within a windows Virtual machine
+    display.seperator("Username check")
+    usernames = ["zeus", 'test']
+    print("actual username " + " " + os.getlogin())
+    for names in usernames:
+        if names == os.getlogin():
+            print(names + ' ' + display.detected())
+        else:
+            print(names +  ' ' + display.undetected())
 
+def hostname_check():
+    display.seperator("Hostname check")
+    hostname = os.environ['userdomain']
+    hostnames = ["vmware", "virtualbox", "test", "vm", "virtual_machine"]
+    for possible_name in hostnames:
+        if possible_name == hostname:
+            print(possible_name + " " + display.detected())
+        else:
+            print(possible_name + " " + display.undetected())

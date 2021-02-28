@@ -1,7 +1,9 @@
 import os, re, sys, subprocess, psutil, fileinput
 import cpuid, struct, keyboard
 import display, registry, windows, linux
-
+from py_vmdetect import VMDetect
+vmd = VMDetect()
+vmd.is_vm()
 def main():
     display.loading()
     display.print_banner()
@@ -15,6 +17,8 @@ def main():
         windows.rdstc_check()
         windows.registry_check()
         windows.driver_check()
+        windows.username_check()
+        windows.hostname_check()
         #windows.guest_additions_check()
     else:
         linux.guest_check()

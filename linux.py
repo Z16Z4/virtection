@@ -3,6 +3,14 @@ from psutil import virtual_memory
 #Linux Functions
 def apply_patches():
     display.seperator("Applying patches...")
+    #build kernal and test patches first, important
+    #fileinput, edit kernal and add modifications 
+    #build kernal need system detection incase build kernal commands differ
+    #host windows iso for download for kvm 
+    #xml host configuration can be copied, options to enter in settings
+    #possible gpu passthrough function, using identical gpu method for automation (can only do on arch)
+    #documentation of implementation on dynamic analysis platform
+
 
 def guest_check():
     display.seperator("Guest or Host check")
@@ -52,3 +60,12 @@ def docker_check():
         print("Docker-container (grub) " + " " +display.undetected())
     else:
         print("Docker-container (grub) " + " " +display.detected())
+
+def basic_vm_check():
+    #checks vmware/virtualbox 
+    #includes information about memory and product
+    #TODO implement system detection on linux
+    dmidecode = 'sudo apt-get install dmidecode -y || sudo pacman -S dmidecode -y &&'
+    os.system("sudo apt-get install dmidecode || sudo pacman -S dmidecode")
+    productids = os.system("dmidecode  | grep -i product")
+    print(productids)
