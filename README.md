@@ -8,7 +8,7 @@ I also aim to create a small community that may assist in updating virtection as
 ## Linux
 ```
 sudo apt-get install git
-git clone https://github.com/cronos-hash/virtection.git
+git clone https://github.com/Z16Z4/virtection.git
 (install modules)
 python3 main.py
 ```
